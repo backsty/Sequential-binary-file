@@ -68,26 +68,6 @@ LinkedList::Iterator LinkedList::end() {
     return Iterator(file, -1);
 }
 
-
-// Вспомогательные методы
-bool LinkedList::writeRecordHeader(const RecordHeader& header, long offset) {
-    file.clear();
-    file.seekp(offset);
-    if (!file.good()) return false;
-    
-    file.write(reinterpret_cast<const char*>(&header), sizeof(RecordHeader));
-    return file.good();
-}
-
-bool LinkedList::readRecordHeader(RecordHeader& header, long offset) {
-    file.clear();
-    file.seekg(offset);
-    if (!file.good()) return false;
-    
-    file.read(reinterpret_cast<char*>(&header), sizeof(RecordHeader));
-    return file.good();
-}
-
 long LinkedList::findLastOffset() {
     if (headOffset == -1) return -1;
     
@@ -210,16 +190,10 @@ bool LinkedList::removeCall(long offset) {
         if (!file.read(reinterpret_cast<char*>(&current), sizeof(Call))) {
             return false;
         }
-        
+
         headOffset = current.nextOffset;
         file.seekp(0);
         file.write(reinterpret_cast<char*>(&headOffset), sizeof(long));
-
-        // Помечаем запись как удаленную!!!!!!!!!!!!!!!!!!!!!!!!!
-        RecordHeader header;
-        header.isDeleted = true;
-        writeRecordHeader(header, offset);
-
         file.flush();
         return true;
     }
@@ -475,10 +449,6 @@ void LinkedList::displayPage(int pageNum, int recordsPerPage) {
     if (!recordsFound) {
         std::cout << "Нет записей на данной странице\n";
     }
-}
-
-long LinkedList::getHeadOffset() const {
-    return headOffset;
 }
 
 // Тестирование с типом int

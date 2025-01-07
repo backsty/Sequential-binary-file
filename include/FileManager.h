@@ -9,7 +9,6 @@
 class FileManager {
 private:
     LinkedList* list;     // Указатель на список звонков
-    const char* filename; // Имя файла с данными
 
 public:
     FileManager(const char* fname);
@@ -34,6 +33,6 @@ public:
     void runTests();  // Запуск всех тестов
 
 private:
-    bool isValidOffset(long offset);                   // Проверка корректности смещения
+//    bool isValidOffset(long offset); // Проверка корректности смещения
     bool isDateEmpty(const char* date);                // Проверка пустой даты
 };

@@ -12,12 +12,6 @@ private:
     std::fstream file;
     long headOffset;
     const char* filename;
-
-    struct RecordHeader {     // Изменено с RecordInfo на RecordHeader
-        long size;           // Размер записи
-        long nextOffset;     // Смещение следующей записи
-        bool isDeleted;      // Флаг удаления для сжатия
-    };
     
 public:
     class Iterator {
@@ -47,20 +41,16 @@ public:
     std::streampos getFileSize();
     void compress();                                    // Сжатие файла
     void displayPage(int pageNum, int recordsPerPage);  // Постраничный вывод
-    long getHeadOffset() const;                         // Получение начального смещения
 
     // Методы для тестирования разных типов данных
-    void testWithInt();    // Тест с int
-    void testWithDouble(); // Тест с double
-    void testWithCall();   // Тест со структурой
+    void testWithInt();        // Тест с int
+    void testWithDouble();     // Тест с double
+    void testWithCall();       // Тест со структурой
 
     long findOffsetByNumber(long logicalNumber);
 
 private:
-    bool writeRecordHeader(const RecordHeader& header, long offset);
-    bool readRecordHeader(RecordHeader& header, long offset);
-    long findLastOffset();
     bool writeCallToFile(const Call& call, long offset);
     bool updateNextOffset(long currentOffset, long newNextOffset);
-    // long findOffsetByNumber(long logicalNumber);
+    long findLastOffset();
 };

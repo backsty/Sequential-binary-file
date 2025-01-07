@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cstring>
 
-FileManager::FileManager(const char* fname) : filename(fname) {
+FileManager::FileManager(const char* fname) {
     list = new LinkedList(fname);
 }
 
@@ -109,10 +109,6 @@ void FileManager::showPage(int pageNum, int recordsPerPage) {
     list->displayPage(pageNum, recordsPerPage);
 }
 
-// void FileManager::compressFile() {
-//     list->compress();
-// }
-
 void FileManager::compressFile() {
     if (!list) {
         std::cout << "Ошибка: список не инициализирован\n";
@@ -179,9 +175,9 @@ void FileManager::runTests() {
     list->testWithCall();
 }
 
-bool FileManager::isValidOffset(long offset) {
-    return offset >= sizeof(long);
-}
+//bool FileManager::isValidOffset(long offset) {
+//    return offset >= sizeof(long);
+//}
 
 bool FileManager::isDateEmpty(const char* date) {
     return !date || strlen(date) == 0;
