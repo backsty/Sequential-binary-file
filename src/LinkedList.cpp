@@ -286,6 +286,18 @@ void LinkedList::insertAfter(long offset, const Call& call) {
 void LinkedList::sort() {
     if (headOffset == -1) return;
 
+    auto compareDates = [](const char* date1, const char* date2) -> bool {
+        int day1, month1, year1;
+        int day2, month2, year2;
+        
+        sscanf(date1, "%d.%d.%d", &day1, &month1, &year1);
+        sscanf(date2, "%d.%d.%d", &day2, &month2, &year2);
+        
+        if (year1 != year2) return year1 > year2;
+        if (month1 != month2) return month1 > month2;
+        return day1 > day2;
+    };
+
     bool swapped;
     do {
         swapped = false;
@@ -306,7 +318,8 @@ void LinkedList::sort() {
                     return;
                 }
 
-                if (strcmp(current.callDate, next.callDate) > 0) {
+                // Изменено условие сравнения дат
+                if (compareDates(current.callDate, next.callDate)) {
                     long currentNext = current.nextOffset;
                     long nextNext = next.nextOffset;
 
